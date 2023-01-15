@@ -7,6 +7,8 @@ of basic boxes. Useful for e.g. button-boxes for flight
 simulators.
 */
 
+use <filleted_cylinder.scad>
+
 // Internal parameters
 EPS = 0.001;  // Used to avoid zero-width surfaces
               // and touching-but-disconnected surfaces.
@@ -49,8 +51,29 @@ module box_base(
         translate([wall_thickness, wall_thickness, wall_thickness])
         rounded_box(w-2*wall_thickness, l-2*wall_thickness, d - wall_thickness + EPS, r_corner - wall_thickness);
     }
+    
+    // Create the corner holes
+    for (right = [0, 1]) {
+        for (top = [0, 1]) {
+            x = right*w + (1-2*right)*r_bolt_outer;
+            y = top*l + (1-2*top)*r_bolt_outer;
+            translate([x, y, 0.5*d])
+            mirror([right, top, 0.0])
+            filleted_cylinder(r=r_bolt_outer, h=d,
+                x1=wall_thickness, x2=2.0*wall_thickness,
+                angle=90);
+        }
+    }
+    // FIXME - bottom-left hold as a prototype first
+    // Shaft to hold the hole
+    r_bolt_outer = 0.5*d_bolt + wall_thickness;
+    translate([r_bolt_outer, r_bolt_outer, 0.5*d])
+    filleted_cylinder(r=r_bolt_outer, h=d,
+        x1=wall_thickness, x2=2.0*wall_thickness,
+        angle=90);
 }
 
-box_base(w=10.0, l=15.0, d=5.0, r_corner=2.0,
-    d_bolt=6.0, d_nut=7.5, h_nut=3.5,
-    wall_thickness=1.0);
+// Demonstration
+box_base(w=50.0, l=50.0, d=25.0, r_corner=5.0,
+    d_bolt=3.0, d_nut=7.5, h_nut=3.5,
+    wall_thickness=4.0);
