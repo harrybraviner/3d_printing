@@ -47,6 +47,12 @@ module box_base(
         }
     }
     
+    module nut_on_base(x, y) {
+        r = 0.5*d_nut / cos(30);
+        translate([x, y, 0.5*h_nut - 0.5*EPS])
+        cylinder(r=r, h=h_nut + EPS, $fn=6, center=true);
+    }
+
     difference() {
         // Used for bolt hole positioning
         r_bolt_outer = 0.5*d_bolt + wall_thickness;
@@ -114,6 +120,8 @@ module box_base(
                     y = top*l + (1-2*top)*r_bolt_outer;
                     translate([x, y, 0.5*d + EPS])
                     cylinder(r=0.5*d_bolt, h=d+2*EPS, center=true);
+
+                    nut_on_base(x, y);
                 }
             }
             
@@ -123,8 +131,10 @@ module box_base(
                     for (i = [1:w_extra_holes]) {
                         x = i*w/(w_extra_holes + 1);
                         y = top*l + (1-2*top)*r_bolt_outer;
-                    translate([x, y, 0.5*d + EPS])
-                    cylinder(r=0.5*d_bolt, h=d+2*EPS, center=true);
+                        translate([x, y, 0.5*d + EPS])
+                        cylinder(r=0.5*d_bolt, h=d+2*EPS, center=true);
+
+                        nut_on_base(x, y);
                     }
                 }
             }
@@ -135,13 +145,13 @@ module box_base(
                     for (i = [1:l_extra_holes]) {
                         x = right*w + (1-2*right)*r_bolt_outer;
                         y = i*l/(l_extra_holes + 1);
-                    translate([x, y, 0.5*d + EPS])
-                    cylinder(r=0.5*d_bolt, h=d+2*EPS, center=true);
+                        translate([x, y, 0.5*d + EPS])
+                        cylinder(r=0.5*d_bolt, h=d+2*EPS, center=true);
+
+                        nut_on_base(x, y);
                     }
                 }
             }
-            
-            // FIXME - nut cutouts in the bottom
         }
     }
 }
