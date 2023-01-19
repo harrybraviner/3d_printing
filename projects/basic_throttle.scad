@@ -28,9 +28,9 @@ path_trans = [for (z=[0:1.0:l_z]) total_body_trans(z)];
 sweep(c1, path_trans);
 
 // Path to make the end-cap
-path_trans_end_cap = [for (z=[0:1.0:end_cap_z]) scaling([cos(asin(z/end_cap_z)), cos(asin(z/end_cap_z)), 1.0]) * total_body_trans(l_z+z)];
+path_trans_end_cap = [for (z=[0:1.0:end_cap_z]) total_body_trans(l_z+z) * scaling([cos(asin(z/end_cap_z)), cos(asin(z/end_cap_z)), 1.0])];
 sweep(c1, path_trans_end_cap);
 
 // Path for the left-cap
-path_trans_left_cap = [for (z=[0:1.0:end_cap_z]) scaling([cos(asin(z/end_cap_z)), cos(asin(z/end_cap_z)), 1.0]) * total_body_trans(0-z)];
+path_trans_left_cap = [for (z=[0:1.0:end_cap_z]) total_body_trans(0-z) * scaling([cos(asin(z/end_cap_z)), cos(asin(z/end_cap_z)), 1.0])];
 sweep(c1, path_trans_left_cap);
