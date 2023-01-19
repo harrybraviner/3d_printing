@@ -4,15 +4,15 @@ use <scad-utils/shapes.scad>
 
 $fn=64;
 
-l_z = 75.0;
-l_x = 50.0;
-l_y = 35.0;
+l_z = 140.0;
+l_x = 80.0;
+l_y = 65.0;
 twist=10.0;
-expansion=0.3;
-expansion_frac=1.4;
+expansion=0.35;
+expansion_frac=1.2;
 expansion_x_bias = 0.7;
 expansion_y_bias = 0.8;
-end_cap_z = 10.0;
+end_cap_z = 20.0;
 
 // Scaling to make an elliptical shape
 scaling_trans_1 = scaling([1.0, (l_y/l_x), 1.0]);
