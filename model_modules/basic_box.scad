@@ -45,32 +45,46 @@ module box_base(
         }
     }
     
-    // Create the hollow box
     difference() {
-        rounded_box(w, l, d, r_corner);
-        translate([wall_thickness, wall_thickness, wall_thickness])
-        rounded_box(w-2*wall_thickness, l-2*wall_thickness, d - wall_thickness + EPS, r_corner - wall_thickness);
-    }
-    
-    // Create the corner holes
-    for (right = [0, 1]) {
-        for (top = [0, 1]) {
-            x = right*w + (1-2*right)*r_bolt_outer;
-            y = top*l + (1-2*top)*r_bolt_outer;
-            translate([x, y, 0.5*d])
-            mirror([right, top, 0.0])
-            filleted_cylinder(r=r_bolt_outer, h=d,
-                x1=wall_thickness, x2=2.0*wall_thickness,
-                angle=90);
+        // Used for bolt hole positioning
+        r_bolt_outer = 0.5*d_bolt + wall_thickness;
+        
+        // Positive part
+        union() {
+            // Create the hollow box
+            difference() {
+                rounded_box(w, l, d, r_corner);
+                translate([wall_thickness, wall_thickness, wall_thickness])
+                rounded_box(w-2*wall_thickness, l-2*wall_thickness, d - wall_thickness + EPS, r_corner - wall_thickness);
+            }
+            
+            // Create the corner hole structures
+            for (right = [0, 1]) {
+                for (top = [0, 1]) {
+                    x = right*w + (1-2*right)*r_bolt_outer;
+                    y = top*l + (1-2*top)*r_bolt_outer;
+                    translate([x, y, 0.5*d])
+                    mirror([right, top, 0.0])
+                    filleted_cylinder(r=r_bolt_outer, h=d,
+                        x1=wall_thickness, x2=2.0*wall_thickness,
+                        angle=90);
+                }
+            }
+        }
+        
+        // Negative part
+        union() {
+            // Create the corner holes themselves
+            for (right = [0, 1]) {
+                for (top = [0, 1]) {
+                    x = right*w + (1-2*right)*r_bolt_outer;
+                    y = top*l + (1-2*top)*r_bolt_outer;
+                    translate([x, y, 0.5*d + EPS])
+                    cylinder(r=0.5*d_bolt, h=d+2*EPS, center=true);
+                }
+            }
         }
     }
-    // FIXME - bottom-left hold as a prototype first
-    // Shaft to hold the hole
-    r_bolt_outer = 0.5*d_bolt + wall_thickness;
-    translate([r_bolt_outer, r_bolt_outer, 0.5*d])
-    filleted_cylinder(r=r_bolt_outer, h=d,
-        x1=wall_thickness, x2=2.0*wall_thickness,
-        angle=90);
 }
 
 // Demonstration
