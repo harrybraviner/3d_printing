@@ -158,5 +158,5 @@ module box_base(
 
 // Demonstration
 box_base(w=50.0, l=75.0, d=25.0, r_corner=5.0,
-    d_bolt=3.0, d_nut=7.5, h_nut=3.5,
+    d_bolt=3.0, d_nut=7.5, h_nut=5.5,
     wall_thickness=4.0, w_extra_holes=0, l_extra_holes=1);
