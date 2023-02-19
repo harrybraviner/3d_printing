@@ -1,4 +1,4 @@
-EPS = 0.01;
+EPS = 0.1;
 WALL_THICKNESS = 1.8;
 GAP_THICKNESS = 3.3;
 BACK_TO_TIP = 26.5;
@@ -27,6 +27,7 @@ difference() {
             union() {
                 translate([-.5*GAP_THICKNESS - WALL_THICKNESS, -.5*GAP_THICKNESS - WALL_THICKNESS, -EPS])
                 cube([GAP_THICKNESS + 2.*WALL_THICKNESS, .5*GAP_THICKNESS + WALL_THICKNESS + EPS, WIDTH + 2*EPS]);
+                translate([0, 0, -EPS])
                 cylinder(r=.5*GAP_THICKNESS, h=WIDTH+2*EPS, $fn=20);
             }
         }
