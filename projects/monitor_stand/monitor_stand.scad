@@ -23,7 +23,7 @@ theta = alpha - asin(x_1 / A);
 
 echo("Theta: ", theta);
 
-module simple_foot() {
+module bottom_connector(include_angle) {
     difference() {
         roundedcube([LEG_W + 2*THICKNESS, LEG_W + 2*THICKNESS,
             BASE_THICKNESS + SLEEVE], radius=FOOT_RADIUS)
@@ -31,6 +31,27 @@ module simple_foot() {
         
         translate([THICKNESS, THICKNESS, BASE_THICKNESS])
         cube([LEG_W, LEG_W, SLEEVE + EPS]);
+    }
+    
+    if (include_angle) {
+        // Sleeve length for angled piece
+        s2 = (SLEEVE - cos(theta) * x_1) / sin(theta);
+        
+        difference() {
+            translate([+x_1, 0, BASE_THICKNESS])
+            rotate([0, 90 - theta, 0])
+            translate([-x_1, 0, 0])
+            difference() {
+                roundedcube([LEG_W + 2*THICKNESS, LEG_W + 2*THICKNESS,
+                    s2], radius=FOOT_RADIUS,
+                    apply_to="zmax");
+
+                translate([THICKNESS, THICKNESS, 0])
+                cube([LEG_W, LEG_W, SLEEVE + EPS]);
+            }
+            translate([0, -EPS, 0])
+            cube([x_1 - FOOT_RADIUS, x_1, SLEEVE+BASE_THICKNESS]);
+        }
     }
 }
 
@@ -72,4 +93,4 @@ module top_connector(include_angle) {
     }
 }
 
-top_connector(include_angle=true);
+bottom_connector(include_angle=true);
