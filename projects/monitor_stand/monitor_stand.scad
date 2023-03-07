@@ -19,7 +19,7 @@ y_cross = OVERALL_H - 2*BASE_THICKNESS;
 x_1 = LEG_W + 2*THICKNESS;
 // Need to solve x_cross * tan(theta) = y_cross - x_1 / cos(theta)
 // Can solve this with a little trig:
-A = sqrt(x_cross^2 + y_cross^2);
+A = sqrt(x_cross*x_cross + y_cross*y_cross);
 alpha = asin(y_cross / A);
 theta = alpha - asin(x_1 / A);
 
