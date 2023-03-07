@@ -7,6 +7,9 @@ BASE_THICKNESS = 5.0;
 SLEEVE = 35.0;
 FOOT_RADIUS = 2.0;
 SPANNER_L = 45.0;
+SCREW_HOLE_D1 = 4.25;
+SCREW_HOLE_D2 = 7.85;
+SCREW_HOLE_H = 2.80;
 
 OVERALL_H = 155.0; // Height from bottom of supports to top
 OVERALL_D = 232.0; // Depth from front to back
@@ -68,10 +71,40 @@ module top_connector(include_angle) {
     }
     // Segments that screw holes will go into ('spanners')
     translate([LEG_W + 2*THICKNESS - 2*FOOT_RADIUS, 0, 0])
-    roundedcube([SPANNER_L + 2*FOOT_RADIUS, LEG_W + 2*THICKNESS, BASE_THICKNESS], radius=FOOT_RADIUS, apply_to="zmax");
+    difference() {
+        roundedcube([SPANNER_L + 2*FOOT_RADIUS, LEG_W + 2*THICKNESS, BASE_THICKNESS], radius=FOOT_RADIUS, apply_to="zmax");
+        
+        union() {
+            translate([2*FOOT_RADIUS + 0.8*SPANNER_L, x_1/2, -EPS])
+            union() {
+                cylinder(r=SCREW_HOLE_D1/2, h=BASE_THICKNESS + 2*EPS);
+                translate([0, 0, BASE_THICKNESS - SCREW_HOLE_H])
+                cylinder(r1=SCREW_HOLE_D1/2, r2=SCREW_HOLE_D2/2, h=SCREW_HOLE_H+EPS);
+            }
+        }
+    }
     
     translate([0, LEG_W + 2*THICKNESS - 2*FOOT_RADIUS, 0])
-    roundedcube([ LEG_W + 2*THICKNESS, SPANNER_L + 2*FOOT_RADIUS, BASE_THICKNESS], radius=FOOT_RADIUS, apply_to="zmax");
+    difference() {
+        roundedcube([ LEG_W + 2*THICKNESS, SPANNER_L + 2*FOOT_RADIUS, BASE_THICKNESS], radius=FOOT_RADIUS, apply_to="zmax");
+        
+        union() {
+            translate([x_1/2, 2*FOOT_RADIUS + 0.8*SPANNER_L, -EPS])
+            union() {
+                cylinder(r=SCREW_HOLE_D1/2, h=BASE_THICKNESS + 2*EPS);
+                translate([0, 0, BASE_THICKNESS - SCREW_HOLE_H])
+                cylinder(r1=SCREW_HOLE_D1/2, r2=SCREW_HOLE_D2/2, h=SCREW_HOLE_H+EPS);
+            }
+            
+            translate([x_1/2, 2*FOOT_RADIUS + 0.3*SPANNER_L, -EPS])
+            union() {
+                cylinder(r=SCREW_HOLE_D1/2, h=BASE_THICKNESS + 2*EPS);
+                translate([0, 0, BASE_THICKNESS - SCREW_HOLE_H])
+                cylinder(r1=SCREW_HOLE_D1/2, r2=SCREW_HOLE_D2/2, h=SCREW_HOLE_H+EPS);
+            }
+        }
+        
+    }
     
     if (include_angle) {
         // Sleeve length for angled piece
