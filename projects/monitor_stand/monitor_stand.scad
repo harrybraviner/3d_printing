@@ -181,6 +181,6 @@ module assembly_demo() {
     cube([OVERALL_D, OVERALL_W, TOP_THICKNESS]);
 }
 
-assembly_demo();
+//assembly_demo();
 
 //top_connector(include_angle=true);
